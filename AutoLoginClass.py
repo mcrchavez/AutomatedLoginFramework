@@ -6,13 +6,17 @@ import time
 import datetime as dt
 
 day_of_week = dt.datetime.now().weekday()
-class AutoGMULogin:
+class AutoLogin:
     def __init__(self, browser='chrome', uname='', passwd=''):
         self.browser = browser
         self.uname = uname
         self.passwd = passwd
         if browser == 'chrome':
             self.web_d = webdriver.Chrome('C:/Users/carch/Downloads/chromedriver_win32/chromedriver.exe')
+        elif browser == 'firefox':
+            self.web_d = webdriver.Firefox()
+        elif browser == 'internet explorer':
+            self.web_d = webdriver.Ie()
     def get_site(self, link):
         try:
             self.web_d.get(link)
@@ -35,7 +39,6 @@ class AutoGMULogin:
     def find_login_elems(self, userid='username', passid='password'):
         """returns tuple of web elements [0] == username
         [1] == password given element ids"""
-       
         try:
             return (self.web_d.find_element_by_id(userid), self.web_d.find_element_by_id(passid))
         except Exception as e:
@@ -43,7 +46,21 @@ class AutoGMULogin:
             print(e)   
     def send_keys(self, browserelem, string):
         browserelem.send_keys(string)
+    def brute_force(self, browserelems = find_login_elems(), uname_list, passwd_list):
+        """will bruteforce login elements with given unames and passwds"""
+        username_elem = browserelems[0]
+        passwd_elem = browserelems[1]
+        for username in uname_list:
+            username_elem.send_keys(username)
+            for password in passwd_list:
+                passwd_elem.send_keys(password)
+            
+        
     
+            
+
+
+    }
 
 
 
